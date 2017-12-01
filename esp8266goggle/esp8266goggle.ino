@@ -20,17 +20,17 @@ ESP8266WebServer server(80);
 IPAddress    apIP(192, 168, 0, 1);
 
 
-int pinCS = D1; // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
+int pinCS = D1; 
 int numberOfHorizontalDisplays = 1;
 int numberOfVerticalDisplays = 3;
 
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 
 String tape = "Arduino";
-int wait = 40; // In milliseconds
+int wait = 40; 
 
 int spacer = 1;
-int width = 5 + spacer; // The font width is 5 pixels
+int width = 5 + spacer; 
 
 
                                                         
@@ -71,7 +71,7 @@ void writeKawaii(){
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,kawaiiLeft,8,8,HIGH);
   matrix.drawBitmap(8,0,kawaiiRight,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   act=0;
 }
 
@@ -79,7 +79,7 @@ void writeSad(){
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,slantedLeft,8,8,HIGH);
   matrix.drawBitmap(8,0,slantedRight,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   act=0;
 }
 
@@ -87,7 +87,7 @@ void writeAngry(){
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,slantedRight,8,8,HIGH);
   matrix.drawBitmap(8,0,slantedLeft,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   act=0;
 }
 
@@ -96,7 +96,7 @@ void writeLove(){
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,lovesign,8,8,HIGH);
   matrix.drawBitmap(8,0,lovesign,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   act=0;
 }
 
@@ -187,67 +187,67 @@ void writeDizzy(){
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzy1,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzy7,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzy2,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzy8,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzy3,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzy9,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzy4,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzyA,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzy5,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzyB,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzy6,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzy1,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzy7,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzy2,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzy8,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzy3,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzy9,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzy4,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzyA,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzy5,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,dizzyB,8,8,HIGH);
   matrix.drawBitmap(8,0,dizzy6,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(65);
 }
@@ -256,67 +256,67 @@ void writeZing(){
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zing1,8,8,HIGH);
   matrix.drawBitmap(8,0,zing1,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zing2,8,8,HIGH);
   matrix.drawBitmap(8,0,zing2,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zing3,8,8,HIGH);
   matrix.drawBitmap(8,0,zing3,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zing4,8,8,HIGH);
   matrix.drawBitmap(8,0,zing4,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zing5,8,8,HIGH);
   matrix.drawBitmap(8,0,zing5,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zing6,8,8,HIGH);
   matrix.drawBitmap(8,0,zing6,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zing7,8,8,HIGH);
   matrix.drawBitmap(8,0,zing7,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zing8,8,8,HIGH);
   matrix.drawBitmap(8,0,zing8,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zing9,8,8,HIGH);
   matrix.drawBitmap(8,0,zing9,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zingA,8,8,HIGH);
   matrix.drawBitmap(8,0,zingA,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   matrix.fillScreen(LOW);
   matrix.drawBitmap(0,0,zingB,8,8,HIGH);
   matrix.drawBitmap(8,0,zingB,8,8,HIGH);
-  matrix.write(); // Send bitmap to display
+  matrix.write(); 
   server.handleClient();
   delay(30);
   act=0;
@@ -327,13 +327,13 @@ void writeUserText(){
   matrix.setPosition(1, 2 ,0); 
   matrix.setPosition(2, 1 ,0); 
   for ( int i = 0 ; i < width * decodedMsg.length() + matrix.width() - 1 - spacer; i++ ) {
-    server.handleClient();                        // checks for incoming messages
+    server.handleClient();
     if (refresh==1) i=0;
     else if(refresh==2){
       refresh=0;
-      matrix.setPosition(0, 0, 0); // The first display is at <0, 0>
-      matrix.setPosition(1, 1, 0); // The second display is at <1, 0>
-      matrix.setPosition(2, 2, 0); // The second display is at <1, 0>
+      matrix.setPosition(0, 0, 0);
+      matrix.setPosition(1, 1, 0);
+      matrix.setPosition(2, 2, 0);
       break;
     }
     refresh=0;
@@ -341,7 +341,7 @@ void writeUserText(){
 
     int letter = i / width;
     int x = (matrix.width() - 1) - i % width;
-    int y = (matrix.height() - 8) / 2; // center the text vertically
+    int y = (matrix.height() - 8) / 2;
  
     while ( x + width - spacer >= 0 && letter >= 0 ) {
       if ( letter < decodedMsg.length() ) {
@@ -362,15 +362,15 @@ void writeUserText(){
 void setup() {
   Serial.begin(9600);
   Serial.println("");
-  WiFi.mode(WIFI_AP);           //Only Access point
+  WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-  WiFi.softAP(ssid, password);  //Start HOTspot removing password will disable security
+  WiFi.softAP(ssid, password);
  
-  IPAddress myIP = WiFi.softAPIP(); //Get IP address
+  IPAddress myIP = WiFi.softAPIP();
   Serial.print("HotSpt IP:");
   Serial.println(myIP);
  
-  server.on("/", handleRoot);      //Which routine to handle at root location
+  server.on("/", handleRoot);
   server.on("/blink", handleBlink);
   server.on("/heart", handleHeart);
   server.on("/happy", handleHappy);
@@ -383,16 +383,16 @@ void setup() {
   server.on("/winkr", handleWinkR);
   server.on("/winkl", handleWinkL);
  
-  server.begin();                  //Start server
+  server.begin();
   Serial.println("HTTP server started"); 
   matrix.setRotation(1);
-  matrix.setIntensity(8); // Use a value between 0 and 15 for brightness
+  matrix.setIntensity(8);
   
 
-  // Adjust to your own needs
-  matrix.setPosition(0, 0, 0); // The first display is at <0, 0>
-  matrix.setPosition(1, 1, 0); // The second display is at <1, 0>
-  matrix.setPosition(2, 2, 0); // The second display is at <1, 0>
+  
+  matrix.setPosition(0, 0, 0);
+  matrix.setPosition(1, 1, 0);
+  matrix.setPosition(2, 2, 0);
   roundEyeBlinking();
   timeBlink=random(500,5000);
   act=1;
