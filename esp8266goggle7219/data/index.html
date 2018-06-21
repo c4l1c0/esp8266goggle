@@ -1,0 +1,64 @@
+<html>
+<head>
+<script>
+var connection = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
+connection.onopen = function () {
+ connection.send('Connect ' + new Date());
+};
+connection.onerror = function (error) {
+ console.log('WebSocket Error ', error);
+};
+connection.onmessage = function (e) {
+ console.log('Server: ', e.data);
+};
+connection.onclose = function () {
+ console.log('WebSocket connection closed');
+};
+function sendData(){ connection.send("!1234567887654321");}
+function handleBlink(){ connection.send("#211");}
+function handleHeart(){ connection.send("#222");}
+function handleHappy(){ connection.send("#233");}
+function handleKawaii(){ connection.send("#244");}
+function handleDizzy(){ connection.send("#255");}
+function handleAngry(){ connection.send("#277");}
+function handleSad(){ connection.send("#288");}
+function handleExclamation(){ connection.send("#299");}
+function handleWinkR(){ connection.send("#2::");}
+function handleWinkL(){ connection.send("#2;;");}
+function handleFFT(){ connection.send("#2<<");}
+</script>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<body>
+<div style="width:100%;">
+<button style="width:80%; height:20%;" id="blinkNormButt" onclick="handleBlink();">Blink Normally</button>
+<br>
+<button style="width:80%; height:20%;" id="heartButt" onclick="handleHeart();">Heart Eye</button>
+<br>
+<button style="width:80%; height:20%;" id="happyButt" onclick="handleHappy();">Happy Eye</button>
+<br>
+<button style="width:80%; height:20%;" id="kawaiiButt" onclick="handleKawaii();">Kawaii Eye</button>
+<br>
+<button style="width:80%; height:20%;" id="dizzyButt" onclick="handleDizzy();">Dizzy Eye</button>
+<br>
+<button style="width:80%; height:20%;" id="angryButt" onclick="handleAngry();">Angry!</button>
+<br>
+<button style="width:80%; height:20%;" id="sadButt" onclick="handleSad();">Sad Eye =(</button>
+<br>
+<button style="width:80%; height:20%;" id="exclButt" onclick="handleExclamation();">!!!!!!!!!</button>
+<br>
+<button style="width:80%; height:20%;" id="winkRButt" onclick="handleWinkR();">Wink Right Eye</button>
+<br>
+<button style="width:80%; height:20%;" id="winkLButt" onclick="handleWinkL();">Wink Left Eye</button>
+<br>
+<button style="width:80%; height:20%;" id="FFTButt" onclick="handleFFT();">Audio Visualizer</button>
+<br>
+<form style="" action="/submit" method="POST">
+<br>Enter any text: <input style="" type='text' name='msgfromuser'> <br> <input style="" type='submit' value='Submit'>
+</form>
+<br>
+<button id="sendit" style="" onclick="sendData();">FFT test</button>
+</div>
+</body>
+</html>
+

@@ -1,69 +1,81 @@
 void handleRoot() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
 }
 void handleBlink() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=1;
   lastAct=1;
 }
 void handleHeart() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=2;
   lastAct=2;
 }
 void handleHappy() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=3;
   lastAct=3;
 }
 void handleKawaii() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=4;
   lastAct=4;
 }
 void handleDizzy() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=5;
   lastAct=5;
 }
 void handleAngry() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=7;
   lastAct=7;
 }
 void handleSad() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=8;
   lastAct=8;
 }
 
 void handleZing() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=9;
   lastAct=9;
 }
 void handleWinkR() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=10;
   lastAct=10;
 }
 void handleWinkL() {
-  server.send(200, "text/html", mainIndex);
+  //server.send(200, "text/html", mainIndex);
   refresh=2;
   act=11;
   lastAct=11;
 }
+
+void handleFFT() {
+  //server.send(200, "text/html", mainIndex);
+  refresh=2;
+  act=12;
+  lastAct=12;
+}
+
 void handleSubmit(){
-  server.send(200, "text/html", mainIndex); 
+  //server.send(200, "text/html", mainIndex); 
+  File file = SPIFFS.open("/index.html", "r");                 // Open it
+  size_t sent = server.streamFile(file, "text/html"); // And send it to the client
+  file.close();  
+  
   String msg=server.arg("msgfromuser");
   Serial.println(msg);
   refresh=1;

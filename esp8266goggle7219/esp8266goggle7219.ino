@@ -1,11 +1,12 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
+#include <WebSocketsServer.h>
 #include <ESP8266WebServer.h>
 
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Max72xxPanel.h>
-
+#include <FS.h>
 
 const char* ssid = "Akai-B-48";
 const char* password = "cepikharies";
@@ -15,52 +16,74 @@ int refresh=0;
 int lastAct;
 String decodedMsg="ITB Insight 2017";
 
-ESP8266WebServer server(80);
-
-IPAddress    apIP(192, 168, 0, 1);
-
-
-int pinCS = D1; 
-int numberOfHorizontalDisplays = 1;
-int numberOfVerticalDisplays = 3;
-
-Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
+const int pinCS = D1; 
+const int numberOfHorizontalDisplays = 1;
+const int numberOfVerticalDisplays = 3;
 
 String tape = "Arduino";
 int wait = 40; 
-
 int spacer = 1;
-int width = 5 + spacer; 
+int width = 5 + spacer;
+int dispArray[16];
 
+ESP8266WebServer server(80);
+WebSocketsServer webSocket(81);
 
-                                                        
+IPAddress    apIP(192, 168, 0, 1);
 
-String mainIndex=
-"<div style=\"width:100vw\">"
-"<a style=\"font-size:8em;\" href=\"/blink\">blink normally</a>"
-"<br>"
-"<a style=\"font-size:8em;\" href=\"/heart\">heart eye</a>"
-"<br>"
-"<a style=\"font-size:8em;\" href=\"/happy\">happy eye</a>"
-"<br>"
-"<a style=\"font-size:8em;\" href=\"/kawaii\">kawaii eye</a>"
-"<br>"
-"<a style=\"font-size:8em;\" href=\"/dizzy\">dizzy eye</a>"
-"<br>"
-"<a style=\"font-size:8em;\" href=\"/angry\">angry eye</a>"
-"<br>"
-"<a style=\"font-size:8em;\" href=\"/sad\">sad eye</a>"
-"<br>"
-"<a style=\"font-size:8em;\" href=\"/exclamation\">exclamation eye</a>"
-"<br>"
-"<a style=\"font-size:8em;\" href=\"/winkr\">wink right</a>"
-"<br>"
-"<a style=\"font-size:8em;\" href=\"/winkl\">wink left</a>"
-"<br>"
-"<form style=\"font-size:5em;\" action=\"/submit\" method=\"POST\">"
-"<br>Enter any text: <input style=\"font-size:3em;\" type='text' name='msgfromuser' size=100> <br> <input style=\"font-size:3em;\" type='submit' value='Submit'></form>"
-"</div>";
+Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 
+//String mainIndex=
+//"<html>"
+//"<head>"
+//"<script>"
+//"var connection = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);"
+//"connection.onopen = function () {"
+//  "connection.send('Connect ' + new Date());"
+//"};"
+//"connection.onerror = function (error) {"
+//  "console.log('WebSocket Error ', error);"
+//"};"
+//"connection.onmessage = function (e) {"
+//  "console.log('Server: ', e.data);"
+//"};"
+//"connection.onclose = function () {"
+//  "console.log('WebSocket connection closed');"
+//"};"
+//"function sendData(){ connection.send(\"!1234567887654321\")}"
+//"</script>"
+//"</head>"
+//"<body>"
+//"<div style=\"width:100vw\">"
+//"<a style=\"font-size:8em;\" href=\"/blink\">blink normally</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/heart\">heart eye</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/happy\">happy eye</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/kawaii\">kawaii eye</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/dizzy\">dizzy eye</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/angry\">angry eye</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/sad\">sad eye</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/exclamation\">exclamation eye</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/winkr\">wink right</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/winkl\">wink left</a>"
+//"<br>"
+//"<a style=\"font-size:8em;\" href=\"/fft\">fft</a>"
+//"<br>"
+//"<form style=\"font-size:5em;\" action=\"/submit\" method=\"POST\">"
+//"<br>Enter any text: <input style=\"font-size:3em;\" type='text' name='msgfromuser' size=100> <br> <input style=\"font-size:3em;\" type='submit' value='Submit'></form>"
+//"<br><button id=\"sendit\" style=\"background-color:#999\" onclick=\"sendData();\">SENDFFT</button>"
+//"</div>"
+//"</body>"
+//"</html>"
+//;
 
 #include "dizzy.h"
 #include "eyecollection.h"
@@ -359,6 +382,60 @@ void writeUserText(){
   matrix.setPosition(2, 2 ,0); 
 }
 
+void writeFFT(){
+  matrix.fillScreen(LOW);
+  for(int i=0;i<16;i++){
+    matrix.drawLine(i,8,i,8-dispArray[i],HIGH);
+  }
+  matrix.write();
+}
+
+void handleWS(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
+  switch (type){
+    case WStype_DISCONNECTED:
+      break;
+    case WStype_CONNECTED:
+      break;
+    case WStype_TEXT:
+      if(payload[0]=='!'){
+        for(int i=0; i<16;i++){
+          dispArray[i]=payload[i+1]-'0';
+        }
+        break;
+      }
+      else if(payload[0]=='#'){
+        refresh=payload[1]-'0';
+        act=payload[2]-'0';
+        lastAct=payload[3]-'0';
+      }
+      break;
+  }
+}
+
+String getContentType(String filename){
+  if(filename.endsWith(".htm")) return "text/html";
+  else if(filename.endsWith(".html")) return "text/html";
+  else if(filename.endsWith(".css")) return "text/css";
+  else if(filename.endsWith(".js")) return "application/javascript";
+  else if(filename.endsWith(".zip")) return "application/x-zip";
+  else if(filename.endsWith(".gz")) return "application/x-gzip";
+  return "text/plain";
+}
+
+bool handleFileRead(String path) { // send the right file to the client (if it exists)
+  Serial.println("handleFileRead: " + path);
+  if (path.endsWith("/")) path += "index.html";         // If a folder is requested, send the index file
+  String contentType = getContentType(path);            // Get the MIME type
+  if (SPIFFS.exists(path)) {                            // If the file exists
+    File file = SPIFFS.open(path, "r");                 // Open it
+    size_t sent = server.streamFile(file, contentType); // And send it to the client
+    file.close();                                       // Then close the file again
+    return true;
+  }
+  Serial.println("\tFile Not Found");
+  return false;                                         // If the file doesn't exist, return false
+}
+
 void setup() {
   Serial.begin(9600);
   Serial.println("");
@@ -370,33 +447,46 @@ void setup() {
   Serial.print("HotSpt IP:");
   Serial.println(myIP);
  
-  server.on("/", handleRoot);
-  server.on("/blink", handleBlink);
-  server.on("/heart", handleHeart);
-  server.on("/happy", handleHappy);
-  server.on("/kawaii", handleKawaii);
-  server.on("/dizzy", handleDizzy);
+//server.on("/", handleRoot);
+//server.on("/blink", handleBlink);
+//  server.on("/heart", handleHeart);
+//  server.on("/happy", handleHappy);
+//  server.on("/kawaii", handleKawaii);
+//  server.on("/dizzy", handleDizzy);
   server.on("/submit", handleSubmit);
-  server.on("/angry", handleAngry);
-  server.on("/sad", handleSad);
-  server.on("/exclamation", handleZing);
-  server.on("/winkr", handleWinkR);
-  server.on("/winkl", handleWinkL);
- 
+//  server.on("/angry", handleAngry);
+//  server.on("/sad", handleSad);
+//  server.on("/exclamation", handleZing);
+//  server.on("/winkr", handleWinkR);
+//  server.on("/winkl", handleWinkL);
+//  server.on("/fft", handleFFT);
+  SPIFFS.begin();
+
+  server.onNotFound([](){
+    if (!handleFileRead(server.uri())){
+      server.send(404, "text/plain", "404");
+    }
+  });
   server.begin();
   Serial.println("HTTP server started"); 
+
+  webSocket.begin();
+  webSocket.onEvent(handleWS);
+  
   matrix.setRotation(1);
   matrix.setIntensity(8);
-  
 
+  for(int i=0;i<16;i++){
+    dispArray[i]=0;
+  }
   
   matrix.setPosition(0, 0, 0);
   matrix.setPosition(1, 1, 0);
   matrix.setPosition(2, 2, 0);
   roundEyeBlinking();
   timeBlink=random(500,5000);
-  act=1;
-  lastAct=1;
+  act=12;
+  lastAct=12;
 }
 
 int currTime=0;
@@ -452,6 +542,12 @@ void loop() {
     delay(25);
     writeWinkLeft();
     server.handleClient();
+  }
+  else if(act==12){
+    webSocket.loop();
+    writeFFT();
+    
+    //delay(15);
   }
   if((millis()-currTime)>timeBlink){
     if(lastAct==1){
