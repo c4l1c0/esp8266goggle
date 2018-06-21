@@ -72,15 +72,14 @@ void handleFFT() {
 
 void handleSubmit(){
   //server.send(200, "text/html", mainIndex); 
-  File file = SPIFFS.open("/index.html", "r");                 // Open it
-  size_t sent = server.streamFile(file, "text/html"); // And send it to the client
+  File file = SPIFFS.open("/index.html", "r");
+  size_t sent = server.streamFile(file, "text/html");
   file.close();  
   
   String msg=server.arg("msgfromuser");
   Serial.println(msg);
   refresh=1;
   decodedMsg = msg;
-  // Restore special characters that are misformed to %char by the client browser
   decodedMsg.replace("+", " ");      
   decodedMsg.replace("%21", "!");  
   decodedMsg.replace("%22", "");  
