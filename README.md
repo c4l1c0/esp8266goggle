@@ -22,3 +22,6 @@ If you use NodeMCU boards, it basically the same, but i'll write it anyway:
 * CS    <==>    D1
 
 CS pin could be set to another pin by specifying it on a variable called pinCS.
+
+# Audio Visualizer Function
+I added audio visualizer function. To use it, you need to run the Processing program on your computer. Your computer need to be connected to the esp8266's access point.
